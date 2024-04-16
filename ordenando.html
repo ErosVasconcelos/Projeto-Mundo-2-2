@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenando Valores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .calculator h1 {
+            margin-top: 0;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input-container label {
+            margin-right: 10px;
+        }
+
+        .input-container input[type="number"] {
+            width: 100px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .btn-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-container button {
+            margin: 0 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-container button:hover {
+            background-color: #45a049;
+        }
+
+        #valores {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            text-align: left;
+            max-width: 200px;
+            border-top: 1px solid transparent;
+            padding-top: 10px;
+        }
+
+        #valores li {
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        #valores li:before {
+            content: "\2022"; 
+            color: black;
+            position: absolute;
+            left: -20px;
+            top: 0;
+        }
+
+        .separator {
+            width: 100%;
+            height: 1px;
+            background-color: transparent;
+            margin: 20px 0;
+        }
+
+        #algoritmo {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Ordenando Valores</h1>
+        <div class="input-container">
+            <label for="valor">Valor:</label>
+            <input type="number" id="valor">
+        </div>
+
+        <div class="input-container">
+            <label for="algoritmo">Escolha o algoritmo de ordenação:</label>
+            <select id="algoritmo">
+                <option value="bubble">Bubble Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="quick">Quick Sort</option>
+            </select>
+        </div>
+
+        <div class="btn-container">
+            <button onclick="add()">Adicionar</button>
+        </div>
+        
+        <div class="separator"></div>
+
+        <div class="btn-container">
+            <button onclick="ordenar()">Ordenar</button>
+            <button onclick="misturar()">Misturar</button>
+        </div>
+
+        <ul id="valores"></ul>
+    </div>
+
+    <script src="ordenando.js"></script>
+    <script>
+        function add() {
+            const valorInput = document.getElementById('valor');
+            const valoresList = document.getElementById('valores');
+            const node = document.createElement('li');
+            const textNode = document.createTextNode(valorInput.value);
+            node.appendChild(textNode);
+            valoresList.appendChild(node);
+        }
+
+        function ordenar() {
+            const valoresList = document.getElementById('valores');
+            const algoritmo = document.getElementById('algoritmo').value;
+            const valores = Array.from(valoresList.children).map(item => parseInt(item.innerHTML));
+            
+            switch (algoritmo) {
+                case 'bubble':
+                    bubble_sort(valores);
+                    break;
+                case 'selection':
+                    selection_sort(valores);
+                    break;
+                case 'quick':
+                    quick_sort(valores, 0, valores.length - 1);
+                    break;
+            }
+            
+            valoresList.innerHTML = valores.map(item => `<li>${item}</li>`).join('');
+        }
+
+        function misturar() {
+            const valoresList = document.getElementById('valores');
+            const valores = Array.from(valoresList.children).map(item => parseInt(item.innerHTML));
+            shuffle(valores, valores.length * 2);
+            valoresList.innerHTML = valores.map(item => `<li>${item}</li>`).join('');
+        }
+    </script>
+</body>
+</html>
